@@ -10,7 +10,7 @@ const services = [
     { value: "hulu", label: "Hulu", color: "#1CE783" },
     { value: "iplayer", label: "Iplayer", color: "#F54997" },
     { value: "mubi", label: "Mubi", color: "#18453B" },
-    { value: "netlfix", label: "Netflix", color: "#E50914" },
+    { value: "netflix", label: "Netflix", color: "#E50914" },
     { value: "now", label: "Now", color: "#FF8200" },
     { value: "paramount", label: "Paramount+", color: "#0039C6" },
     { value: "peacock", label: "Peacock", color: "#00A4E4" },

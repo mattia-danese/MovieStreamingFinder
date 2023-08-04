@@ -10,7 +10,7 @@ const servicesValueToLabel = {
     "hulu": "Hulu",
     "iplayer": "Iplayer", 
     "mubi": "Mubi",
-    "netlfix": "Netflix",
+    "netflix": "Netflix",
     "now": "Now",
     "paramount": "Paramount+", 
     "peacock": "Peacock", 

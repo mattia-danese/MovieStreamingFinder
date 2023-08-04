@@ -12,11 +12,17 @@ import { movieQuery } from './utils/movieQuery';
 function App() {
   const [step, setStep] = useState(0);
 
-  const [movie, setMovie] = useState("");
+  const [mediaTitle, setMediaTitle] = useState("");
   const [outputMovieName, setOutputMovieName] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [mediaType, setMediaType] = useState("")
+
+  const handleChooseMovieOrTV = (e) => {
+    setStep(step + 1);
+    setMediaType(e.target.name);
+  }
 
   const handleNext = () => {
     setStep(step + 1);
@@ -26,12 +32,11 @@ function App() {
   }
 
   const handleOnChange = (e) => {
-    setMovie(e.target.value);
+    setMediaTitle(e.target.value);
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(movie, selectedServices, selectedCountries);
 
     let cleanSelectedServices = [];
     for (const service of selectedServices) cleanSelectedServices.push(service.value);
@@ -40,18 +45,15 @@ function App() {
     for (const countries of selectedCountries) cleanSelectedCountries.push(countries.value);
 
 
-    const [queryOutput, queryMovieName] = await movieQuery(movie, cleanSelectedServices, cleanSelectedCountries, selectedCountries);
-    console.log("RECEIVED QUERY OUTPUT:", queryOutput);
+    const [queryOutput, queryMovieName] = await movieQuery(mediaTitle, mediaType, cleanSelectedServices, cleanSelectedCountries, selectedCountries);
 
     setTableData(queryOutput);
     setOutputMovieName(queryMovieName);
 
     setStep(0);
-    setMovie("");
+    setMediaTitle("");
     setSelectedServices([]);
     setSelectedCountries([]);
-
-    console.log("Exiting onSubmit, tableData is now:", tableData);
   }
 
   const colorStylesServices = {
@@ -77,19 +79,28 @@ function App() {
                 <h2 className='text-2xl'>See which streaming services have your favorite movies!</h2>
             </div>
             <form onSubmit={handleSubmit} className='mt-10 '>
-                <section className={step === 0 ? 'block w-full flex justify-between gap-3' : 'hidden'}>
+                <section className={step === 0 ? 'block w-full text-center' : 'hidden'}>
+                    <div className='text-lg'>Are you looking for a movie or TV show?</div>
+                
+                    <div className='flex gap-3 justify-center'>
+                        <Button type="button" message="Movie" name="movie" handleOnClick={handleChooseMovieOrTV} styles={`bg-white mt-4 self-end font-medium rounded-lg h-[40px] w-20 p-2`} />
+                        <Button type='button' message="TV Show" name="series" handleOnClick={handleChooseMovieOrTV}  styles={`bg-white self-end font-medium rounded-lg h-[40px] w-24 p-2`} />
+                    </div>
+                </section>
+                
+                <section className={step === 1 ? 'block w-full flex justify-between gap-3' : 'hidden'}>
                     <div className='w-full'>
-                        <label className='text-lg'>Enter a movie name</label>
-                        <input value={movie} className='w-full h-[40px] rounded-lg text-lg mt-2 p-2' onChange={handleOnChange} />
+                        <label className='text-lg'>Enter a {mediaType === 'movie' ? 'Movie' : 'TV Show'} name</label>
+                        <input value={mediaTitle} className='w-full h-[40px] rounded-lg text-lg mt-2 p-2' onChange={handleOnChange} />
                     </div>
             
                     <div className='flex gap-3'>
-                        <Button type="button" message="Back" handleOnClick={handleBack} disabled={step === 0} styles={`self-end font-medium rounded-lg ${step === 0 ? 'bg-gray-300' : 'bg-rose-500'} h-[40px] w-20 p-2`} />
-                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={!movie}  styles={`self-end font-medium rounded-lg ${!movie ? 'bg-gray-300' : 'bg-sky-500'} h-[40px] w-20 p-2`} />
+                        <Button type="button" message="Back" handleOnClick={handleBack} styles={`self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2`} />
+                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={!mediaTitle}  styles={`self-end font-medium rounded-lg ${!mediaTitle ? 'bg-gray-300' : 'bg-sky-500'} h-[40px] w-20 p-2`} />
                     </div>
                 </section>
 
-                <section className={step === 1 ? `block w-full flex justify-between gap-3` : 'hidden'}>
+                <section className={step === 2 ? `block w-full flex justify-between gap-3` : 'hidden'}>
                     <div className='w-full'>
                         <label className='text-lg'>Which services would you like to search?</label>
                         <MultiSelect options={services} value={selectedServices} onChange={setSelectedServices} selectAllLabel="All Streaming Services" styles={colorStylesServices} />    
@@ -102,7 +113,7 @@ function App() {
                     
                 </section>
 
-                <section className={step === 2 ? `block w-full flex justify-between gap-3` : 'hidden'}>
+                <section className={step === 3 ? `block w-full flex justify-between gap-3` : 'hidden'}>
                     <div className='w-full'>
                         <label className='text-lg'>Which countries would you like to search in?</label>
                         <MultiSelect options={countries} value={selectedCountries} onChange={setSelectedCountries} selectAllLabel="All Available Countries" styles={colorStylesCountries} />
@@ -117,10 +128,10 @@ function App() {
                 </section>
             </form>
 
-            <div className='w-full bg-cyan-100 mt-4 text-center '>
-                {outputMovieName && <h2 className='text-2xl'>Showing results for: {tableData.movie}</h2>}
-                {tableData.map((data) => (
-                    <DataTable key={data.country} header={data.country} value={data.data} className='mt-10'>
+            <div className='w-full bg-cyan-100 mt-8 text-center '>
+                {outputMovieName && <h2 className='text-2xl'>Showing results for: {outputMovieName}</h2>}
+                {tableData.map((data, i) => (
+                    <DataTable key={data.country} header={data.country} value={data.data} className={`mt-4 ${i === tableData.length-1 ? 'mb-10' : ''}`}>
                         <Column field='service' header='Service' />
                         <Column field='streamingType' header='Streaming Type' />
                     </DataTable>
