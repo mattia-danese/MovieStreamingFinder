@@ -1,0 +1,25 @@
+const servicesValueToLabel = {
+    "all4" : "All4",
+    "apple": "Apple",
+    "britbox": "Britbox",
+    "crave": "Crave", 
+    "curiosity": "Curiosity", 
+    "disney": "Disney", 
+    "hbo": "HBO", 
+    "hotstar": "Hotstar",
+    "hulu": "Hulu",
+    "iplayer": "Iplayer", 
+    "mubi": "Mubi",
+    "netlfix": "Netflix",
+    "now": "Now",
+    "paramount": "Paramount+", 
+    "peacock": "Peacock", 
+    "prime": "Prime", 
+    "showtime": "Showtime",
+    "stan": "Stan", 
+    "starz": "Starz", 
+    "wow": "Wow", 
+    "zee5": "Zee5", 
+};
+
+export { servicesValueToLabel };
