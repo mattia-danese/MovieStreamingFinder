@@ -72,11 +72,11 @@ function App() {
   }
 
   return (
-    <div className='min-h-screen flex justify-center bg-cyan-100'>
+    <div className='min-h-screen flex justify-center bg-cyan-100 '>
         <div className='mt-40'>
-            <h1 className='text-8xl font-source'>Movie Finder</h1>
+            <h1 className='text-8xl font-source'>Where To Watch</h1>
             <div className='flex justify-center mt-4 text-lg'>
-                <h2 className='text-2xl'>See which streaming services have your favorite movies!</h2>
+                <h2 className='text-2xl'>See which streaming services have your favorite movies and TV shows!</h2>
             </div>
             <form onSubmit={handleSubmit} className='mt-10 '>
                 <section className={step === 0 ? 'block w-full text-center' : 'hidden'}>
