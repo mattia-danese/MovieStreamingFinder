@@ -84,8 +84,8 @@ function App() {
                     </div>
             
                     <div className='flex gap-3'>
-                        <Button type="button" message="Back" handleOnClick={handleBack} disabled={step==0} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
-                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={!movie}  styles={`self-end font-medium rounded-lg bg-sky-500 h-[40px] w-20 p-2`} />
+                        <Button type="button" message="Back" handleOnClick={handleBack} disabled={step === 0} styles={`self-end font-medium rounded-lg ${step === 0 ? 'bg-gray-300' : 'bg-rose-500'} h-[40px] w-20 p-2`} />
+                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={!movie}  styles={`self-end font-medium rounded-lg ${!movie ? 'bg-gray-300' : 'bg-sky-500'} h-[40px] w-20 p-2`} />
                     </div>
                 </section>
 
@@ -97,7 +97,7 @@ function App() {
 
                     <div className='flex gap-3'>
                         <Button type="button" message="Back" handleOnClick={handleBack} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
-                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={selectedServices.length === 0} styles={`self-end font-medium rounded-lg bg-sky-500 h-[40px] w-20 p-2`} />
+                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={selectedServices.length === 0} styles={`self-end font-medium rounded-lg ${selectedServices.length === 0 ? 'bg-gray-300' : 'bg-sky-500'} h-[40px] w-20 p-2`} />
                     </div>
                     
                 </section>
@@ -110,7 +110,7 @@ function App() {
 
                     <div className='flex gap-3'>
                         <Button type="button" message="Back" handleOnClick={handleBack} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
-                        <button type='submit' disabled={selectedCountries.length === 0} className={`font-medium rounded-lg bg-emerald-600 h-[40px] w-20 self-end  p-2`}>
+                        <button type='submit' disabled={selectedCountries.length === 0} className={`font-medium rounded-lg ${selectedCountries.length === 0 ? 'bg-gray-300' : 'bg-emerald-600'} h-[40px] w-20 self-end  p-2`}>
                             Search
                         </button>
                     </div>
