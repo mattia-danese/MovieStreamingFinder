@@ -5,6 +5,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
 import { MultiSelect } from './components/MultiSelect';
+import { Button } from './components/Button';
 import { services, countries } from '../constants';
 import { movieQuery } from './utils/movieQuery';
 
@@ -16,12 +17,6 @@ function App() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [tableData, setTableData] = useState([]);
-
-  const [formData, setFormData] = useState({
-    movie: "",
-    services: [],
-    countries: [],
-  });
 
   const handleNext = () => {
     setStep(step + 1);
@@ -81,31 +76,45 @@ function App() {
             <div className='flex justify-center mt-4 text-lg'>
                 <h2 className='text-2xl'>See which streaming services have your favorite movies!</h2>
             </div>
-            <form onSubmit={handleSubmit} className='mt-10 flex justify-between gap-3'>
-                <section className={step === 0 ? 'block w-full' : 'hidden'}>
-                    <label className='text-lg'>Enter a movie name</label>
-                    <input value={movie} className='w-full h-[40px] rounded-lg text-lg mt-2 p-2' onChange={handleOnChange} />
+            <form onSubmit={handleSubmit} className='mt-10 '>
+                <section className={step === 0 ? 'block w-full flex justify-between gap-3' : 'hidden'}>
+                    <div className='w-full'>
+                        <label className='text-lg'>Enter a movie name</label>
+                        <input value={movie} className='w-full h-[40px] rounded-lg text-lg mt-2 p-2' onChange={handleOnChange} />
+                    </div>
+            
+                    <div className='flex gap-3'>
+                        <Button type="button" message="Back" handleOnClick={handleBack} disabled={step==0} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
+                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={!movie}  styles={`self-end font-medium rounded-lg bg-sky-500 h-[40px] w-20 p-2`} />
+                    </div>
                 </section>
 
-                <section className={step === 1 ? `block w-full` : 'hidden'}>
-                    <label className='text-lg'>Which services would you like to search?</label>
-                    <MultiSelect options={services} value={selectedServices} onChange={setSelectedServices} selectAllLabel="All Streaming Services" styles={colorStylesServices} />
+                <section className={step === 1 ? `block w-full flex justify-between gap-3` : 'hidden'}>
+                    <div className='w-full'>
+                        <label className='text-lg'>Which services would you like to search?</label>
+                        <MultiSelect options={services} value={selectedServices} onChange={setSelectedServices} selectAllLabel="All Streaming Services" styles={colorStylesServices} />    
+                    </div>
+
+                    <div className='flex gap-3'>
+                        <Button type="button" message="Back" handleOnClick={handleBack} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
+                        <Button type='button' message="Next" handleOnClick={handleNext} disabled={selectedServices.length === 0} styles={`self-end font-medium rounded-lg bg-sky-500 h-[40px] w-20 p-2`} />
+                    </div>
+                    
                 </section>
 
-                <section className={step === 2 ? `block w-full` : 'hidden'}>
-                    <label className='text-lg'>Which countries would you like to search in?</label>
-                    <MultiSelect options={countries} value={selectedCountries} onChange={setSelectedCountries} selectAllLabel="All Available Countries" styles={colorStylesCountries} />
+                <section className={step === 2 ? `block w-full flex justify-between gap-3` : 'hidden'}>
+                    <div className='w-full'>
+                        <label className='text-lg'>Which countries would you like to search in?</label>
+                        <MultiSelect options={countries} value={selectedCountries} onChange={setSelectedCountries} selectAllLabel="All Available Countries" styles={colorStylesCountries} />
+                    </div>
+
+                    <div className='flex gap-3'>
+                        <Button type="button" message="Back" handleOnClick={handleBack} styles='self-end font-medium rounded-lg bg-rose-500 h-[40px] w-20 p-2' />
+                        <button type='submit' disabled={selectedCountries.length === 0} className={`font-medium rounded-lg bg-emerald-600 h-[40px] w-20 self-end  p-2`}>
+                            Search
+                        </button>
+                    </div>
                 </section>
-                
-                <button type='button' onClick={handleBack} disabled={step==0} className='font-medium rounded-lg bg-rose-500	h-[40px] w-20 self-end p-2'>
-                    Back
-                </button>
-                <button type='button' onClick={handleNext} className={`font-medium rounded-lg bg-sky-500 h-[40px] w-20 self-end ${step == 2 ? 'hidden' : 'block'} p-2`} >
-                    Next
-                </button>
-                <button type='submit' className={`font-medium rounded-lg bg-emerald-600 h-[40px] w-20 self-end ${step == 2 ? 'block' : 'hidden'} p-2`}>
-                    Search
-                </button>
             </form>
 
             <div className='w-full bg-cyan-100 mt-4 text-center '>
@@ -115,7 +124,6 @@ function App() {
                         <Column field='service' header='Service' />
                         <Column field='streamingType' header='Streaming Type' />
                     </DataTable>
-                    // <div>{data.country}</div>
                 ))}
             </div>
             
