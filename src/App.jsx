@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { PulseLoader } from "react-spinners/PulseLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column'; 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -18,6 +20,7 @@ function App() {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [mediaType, setMediaType] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChooseMovieOrTV = (e) => {
     setStep(step + 1);
@@ -37,6 +40,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
 
     let cleanSelectedServices = [];
     for (const service of selectedServices) cleanSelectedServices.push(service.value);
@@ -54,6 +58,7 @@ function App() {
     setMediaTitle("");
     setSelectedServices([]);
     setSelectedCountries([]);
+    setIsSubmitted(false);
   }
 
   const colorStylesServices = {
@@ -129,7 +134,7 @@ function App() {
             </form>
 
             <div className='w-full bg-cyan-100 mt-8 text-center '>
-                {outputMovieName && <h2 className='text-2xl'>Showing results for: {outputMovieName}</h2>}
+                {outputMovieName ? <h2 className='text-2xl'>Showing results for: {outputMovieName}</h2> : isSubmitted ? <ClipLoader /> : ""}
                 {tableData.map((data, i) => (
                     <DataTable key={data.country} header={data.country} value={data.data} className={`mt-4 ${i === tableData.length-1 ? 'mb-10' : ''}`}>
                         <Column field='service' header='Service' />
